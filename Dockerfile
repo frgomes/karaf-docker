@@ -10,9 +10,10 @@ RUN wget http://ftp.fau.de/apache/karaf/${KARAF_VERSION}/apache-karaf-${KARAF_VE
     tar --strip-components=1 -C ${KARAF_INSTALL_DIR} -xzf apache-karaf-${KARAF_VERSION}.tar.gz; \
     rm apache-karaf-${KARAF_VERSION}.tar.gz; \
     mkdir /deploy; \
-    sed -i 's/^\(felix\.fileinstall\.dir\s*=\s*\).*$/\1\/deploy/' ${KARAF_INSTALL_DIR}/etc/org.apache.felix.fileinstall-deploy.cfg; \   
+    sed -i 's/^\(felix\.fileinstall\.dir\s*=\s*\).*$/\1\/deploy/' ${KARAF_INSTALL_DIR}/etc/org.apache.felix.fileinstall-deploy.cfg; \ 
+    sed -i 's/^\(log4j\.appender\.out\.file\s*=\s*\).*$/\1\/logs/' ${KARAF_INSTALL_DIR}/etc/org.ops4j.pax.logging.cfg; \   
     sed -i 's/featuresBoot =/featuresBoot = war,/g' ${KARAF_INSTALL_DIR}/etc/org.apache.karaf.features.cfg
 
-VOLUME ["/deploy"]
+VOLUME ["/deploy", "/logs"]
 EXPOSE 1099 8101 8181 44444
 ENTRYPOINT ["/opt/karaf/bin/karaf"]
